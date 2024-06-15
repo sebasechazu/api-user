@@ -1,17 +1,9 @@
 'use strict';
-
 import { MongoClient, ServerApiVersion } from 'mongodb';
-import { config } from 'dotenv';
+
 import app from './app.js';
 
-config();
-
-const username = process.env.APP_USERNAME;
-const password = process.env.PASSWORD;
-const dbName = process.env.DB_NAME;
-const port = process.env.PORT;
-
-const uri = `mongodb+srv://${username}:${password}@virosque.fpns6wb.mongodb.net/?retryWrites=true&w=majority&appName=virosque`;
+const uri = `mongodb+srv://${process.env.APP_USERNAME}:${process.env.PASSWORD}@virosque.fpns6wb.mongodb.net/?retryWrites=true&w=majority&appName=virosque`;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -25,7 +17,7 @@ export async function connectDatabase() {
   try {
     await client.connect();
     console.log('Conexión exitosa a la base de datos');
-    app.locals.db = client.db(dbName);
+    app.locals.db = client.db(process.env.DB_NAME);
   } catch (error) {
     console.error('Error al conectar con la base de datos:', error);
     throw error; 
@@ -47,8 +39,8 @@ export async function startServer() {
   try {
     await connectDatabase();
 
-    app.listen(port, () => {
-      console.log(`Servidor corriendo en el puerto ${port}`);
+    app.listen(process.env.PORT, () => {
+      console.log(`Servidor corriendo en el puerto ${process.env.PORT}`);
     });
   } catch (error) {
     console.error('Error al conectar con la base de datos:', error);
