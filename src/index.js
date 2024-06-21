@@ -3,7 +3,14 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 
 import app from './app.js';
 
-const uri = `mongodb+srv://${process.env.APP_USERNAME}:${process.env.PASSWORD}@virosque.fpns6wb.mongodb.net/?retryWrites=true&w=majority&appName=virosque`;
+const uri = `mongodb+srv://${process.env.APP_USERNAME}:${process.env.PASSWORD}@cluster0.zcjyhva.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&ssl=true`;
+
+
+console.log(process.env.APP_USERNAME)
+console.log(process.env.PASSWORD)
+console.log(process.env.DB_NAME)
+console.log(process.env.PORT)
+console.log(process.env.JWT_SECRET)
 
 const client = new MongoClient(uri, {
   serverApi: {

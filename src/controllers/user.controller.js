@@ -25,7 +25,7 @@ export const registerUser = async (req, res) => {
             );
 
 
-            const existingUser = await getDatabase().collection('users').findOne({ user: user.user.toLowerCase() });
+            const existingUser = await getDatabase().collection('user').findOne({ user: user.user.toLowerCase() });
 
 
             if (existingUser) {
@@ -36,7 +36,7 @@ export const registerUser = async (req, res) => {
 
             user.password = hashedPassword;
 
-            const userStored = await getDatabase().collection('users').insertOne(user);
+            const userStored = await getDatabase().collection('user').insertOne(user);
 
             if (userStored) {
                 registerUser.password = undefined;
@@ -65,7 +65,7 @@ export const loginUser = async (req, res) => {
 
         if (user && password) {
 
-            const userRegister = await getDatabase().collection('users').findOne({ user: user });
+            const userRegister = await getDatabase().collection('user').findOne({ user: user });
 
             if (userRegister) {
                 const passwordMatch = await compare(password, userRegister.password);
@@ -102,7 +102,7 @@ export const getUser = async (req, res) => {
             return res.status(400).send({ message: 'ID de usuario no válido' });
         }
 
-        const user = await getDatabase().collection('users').findOne({ _id: new ObjectId(userId) });
+        const user = await getDatabase().collection('user').findOne({ _id: new ObjectId(userId) });
 
         if (!user) {
             return res.status(404).send({ message: 'El usuario no esta registrado' });
@@ -119,13 +119,13 @@ export const getUser = async (req, res) => {
 
 export const getUsers = async (req, res) => {
     try {
-        const users = await getDatabase().collection('users').find().toArray();
+        const users = await getDatabase().collection('user').find().toArray();
 
         users.forEach((user) => {
             user.password = undefined;
         });
 
-        return res.status(200).send({ users });
+        return res.status(200).send({ user });
     } catch (error) {
         console.error('Error al obtener la lista de usuarios:', error);
         return res.status(500).send({ message: 'Error en la petición' });
